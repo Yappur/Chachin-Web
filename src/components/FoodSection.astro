@@ -1,0 +1,649 @@
+---
+import { Picture } from 'astro:assets';
+import pizza from '../assets/foods/pizza-02.webp';
+import milanesa from '../assets/foods/sanguche-milanesa.webp';
+import lomito from '../assets/foods/sanguche-lomito.webp';
+import hamburguesa from '../assets/foods/hamburguesa.webp';
+import napolitana from '../assets/foods/napolitana.webp';
+
+const index = [
+	{ id: 'pizzas', label: 'Pizzas' },
+	{ id: 'sanguches', label: 'Sánguches' },
+	{ id: 'hamburguesas', label: 'Hamburguesas' },
+	{ id: 'napolitanas', label: 'Napolitanas' },
+];
+const formats = ['avif'] as const;
+const fallbackFormat = 'webp';
+---
+
+<section class="specials" id="sabores" aria-labelledby="specials-title">
+	<header class="specials__intro page-container">
+		<div class="specials__heading">
+			<p class="specials__eyebrow">Especialidades</p>
+			<h2 id="specials-title">Lo que sale<br />de la <em>cocina.</em></h2>
+		</div>
+
+		<div class="specials__aside">
+			<p class="specials__lead">Cuatro clásicos para pedir al centro, compartir y volver por más.</p>
+			<nav class="specials__index" aria-label="Especialidades de Chachín">
+				<ul>
+					{index.map((item) => (
+						<li>
+							<a href={`#${item.id}`}>
+								<span class="specials__index-label">{item.label}</span>
+								<span class="specials__index-arrow" aria-hidden="true">↓</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<article class="dish dish--pizza" id="pizzas" aria-labelledby="dish-pizzas">
+		<div class="dish__inner page-container">
+			<p class="dish__word" aria-hidden="true">Pizzas</p>
+			<div class="dish__media">
+				<Picture
+					src={pizza}
+					formats={formats}
+					fallbackFormat={fallbackFormat}
+					widths={[520, 800, 1024]}
+					sizes="(max-width: 760px) 118vw, 64vw"
+					alt="Pizza de mozzarella con hierbas y albahaca, cortada en porciones"
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+			<div class="dish__copy">
+				<h3 id="dish-pizzas">Pizzas</h3>
+				<p class="dish__tagline">para el centro de la mesa</p>
+				<p class="dish__text">Llegan enteras, se cortan en porciones y se reparten entre todos.</p>
+			</div>
+		</div>
+	</article>
+
+	<article class="dish dish--sanguches" id="sanguches" aria-labelledby="dish-sanguches">
+		<div class="dish__inner page-container">
+			<p class="dish__word" aria-hidden="true">Sánguches</p>
+			<div class="dish__copy">
+				<h3 id="dish-sanguches">Sánguches</h3>
+				<p class="dish__tagline">de milanesa y de lomito</p>
+				<p class="dish__text">Los de siempre, para agarrar con las dos manos y comer sin apuro.</p>
+			</div>
+			<div class="dish__media dish__pair">
+				<figure class="dish__pair-item dish__pair-item--milanesa">
+					<Picture
+						src={milanesa}
+						formats={formats}
+						fallbackFormat={fallbackFormat}
+						widths={[480, 800, 1024]}
+						sizes="(max-width: 760px) 90vw, 46vw"
+						alt="Sánguche de milanesa con lechuga y tomate"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+				<figure class="dish__pair-item dish__pair-item--lomito">
+					<Picture
+						src={lomito}
+						formats={formats}
+						fallbackFormat={fallbackFormat}
+						widths={[480, 800, 1024]}
+						sizes="(max-width: 760px) 80vw, 38vw"
+						alt="Sánguche de lomito con huevo, queso y tomate"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</div>
+		</div>
+	</article>
+
+	<article class="dish dish--burger" id="hamburguesas" aria-labelledby="dish-burger">
+		<div class="dish__inner page-container">
+			<p class="dish__word" aria-hidden="true">Burgers</p>
+			<p class="dish__note" aria-hidden="true">bien de bar</p>
+			<div class="dish__media">
+				<Picture
+					src={hamburguesa}
+					formats={formats}
+					fallbackFormat={fallbackFormat}
+					widths={[400, 740]}
+					sizes="(max-width: 760px) 84vw, 44vw"
+					alt="Hamburguesa con queso cheddar, lechuga y tomate en pan con sésamo"
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+			<div class="dish__copy">
+				<h3 id="dish-burger">Hamburguesas</h3>
+				<p class="dish__tagline">para morder en serio</p>
+			</div>
+		</div>
+	</article>
+
+	<article class="dish dish--napo" id="napolitanas" aria-labelledby="dish-napo">
+		<div class="dish__inner page-container">
+			<p class="dish__word" aria-hidden="true">Napo</p>
+			<div class="dish__copy">
+				<h3 id="dish-napo">Napolitanas</h3>
+				<p class="dish__tagline">un clásico de siempre</p>
+				<p class="dish__text">La milanesa a la napolitana de toda la vida, para pedir y compartir en la mesa.</p>
+				<a class="dish__button" href="#visitanos">Venite a probarlas <span aria-hidden="true">↗</span></a>
+			</div>
+			<div class="dish__media">
+				<Picture
+					src={napolitana}
+					formats={formats}
+					fallbackFormat={fallbackFormat}
+					widths={[360, 539, 800, 1024]}
+					sizes="(max-width: 760px) 92vw, 560px"
+					alt="Milanesa a la napolitana con papas fritas"
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+		</div>
+	</article>
+</section>
+
+<style>
+	/* ------------------------------------------------------------ intro */
+	.specials {
+		background: var(--color-cream);
+		color: var(--color-ink);
+	}
+
+	.specials__intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(280px, 0.62fr);
+		align-items: end;
+		gap: clamp(2rem, 7vw, 7rem);
+		padding-block: clamp(5rem, 10vw, 9rem) clamp(3.5rem, 7vw, 6rem);
+	}
+
+	.specials__eyebrow {
+		margin-bottom: 1.25rem;
+		font-size: var(--text-small);
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.specials h2 {
+		font-family: var(--font-display);
+		font-size: var(--text-heading);
+		letter-spacing: -0.035em;
+		line-height: 0.91;
+	}
+
+	.specials h2 em {
+		font-family: var(--font-editorial);
+		font-weight: 400;
+		letter-spacing: -0.045em;
+	}
+
+	.specials__lead {
+		max-width: 30ch;
+		font-size: var(--text-lead);
+		line-height: 1.4;
+	}
+
+	.specials__index ul {
+		margin: 2rem 0 0;
+		padding: 0;
+		list-style: none;
+		border-top: 1px solid var(--color-ink);
+	}
+
+	.specials__index a {
+		min-height: 48px;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		border-bottom: 1px solid rgb(37 37 37 / 25%);
+		font-size: 0.9375rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: padding 200ms var(--ease-standard), background-color 200ms var(--ease-standard);
+	}
+
+	.specials__index-arrow {
+		opacity: 0;
+		transform: translateY(-4px);
+		transition: opacity 180ms var(--ease-standard), transform 180ms var(--ease-standard);
+	}
+
+	.specials__index a:hover,
+	.specials__index a:focus-visible {
+		padding-inline: 0.75rem;
+		background: var(--color-orange);
+	}
+
+	.specials__index a:hover .specials__index-arrow,
+	.specials__index a:focus-visible .specials__index-arrow {
+		opacity: 1;
+		transform: none;
+	}
+
+	/* ------------------------------------------------------------ chapter base */
+	.dish {
+		position: relative;
+		overflow: clip;
+		scroll-margin-top: 0;
+	}
+
+	.dish__inner {
+		position: relative;
+		display: grid;
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: clamp(1rem, 2vw, 1.5rem);
+		align-items: center;
+		min-height: clamp(560px, 58vw, 820px);
+		padding-block: clamp(4rem, 7vw, 6rem);
+	}
+
+	.dish__word {
+		position: absolute;
+		z-index: 0;
+		font-family: var(--font-display);
+		font-size: clamp(7rem, 22vw, 22rem);
+		line-height: 0.8;
+		letter-spacing: -0.03em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.dish__media {
+		position: relative;
+		z-index: 1;
+		grid-row: 1;
+	}
+
+	.dish__media :global(img) {
+		width: 100%;
+		height: auto;
+		filter: drop-shadow(0 28px 28px rgb(37 37 37 / 24%));
+		transition: transform 250ms var(--ease-standard);
+	}
+
+	.dish__copy {
+		position: relative;
+		z-index: 2;
+		grid-row: 1;
+	}
+
+	.dish h3 {
+		margin-top: 1.25rem;
+		font-family: var(--font-display);
+		font-size: clamp(3.25rem, 6.4vw, 6.5rem);
+		letter-spacing: -0.03em;
+		line-height: 0.9;
+	}
+
+	.dish__tagline {
+		margin-top: 0.6rem;
+		font-family: var(--font-editorial);
+		font-size: clamp(1.6rem, 2.7vw, 2.5rem);
+		font-style: italic;
+		line-height: 1.05;
+	}
+
+	.dish__text {
+		max-width: 30ch;
+		margin-top: 1.5rem;
+	}
+
+	@media (hover: hover) {
+		.dish:hover .dish__media :global(img) {
+			transform: translateY(-6px) rotate(-1.5deg);
+		}
+	}
+
+	/* ------------------------------------------------------------ 01 pizzas */
+	.dish--pizza {
+		background: var(--color-orange);
+	}
+
+	.dish--pizza .dish__word {
+		right: -0.04em;
+		bottom: -0.16em;
+		color: rgb(37 37 37 / 11%);
+	}
+
+	.dish--pizza .dish__media {
+		grid-column: 1 / 8;
+		margin-left: calc(var(--page-gutter) * -1 - 7vw);
+	}
+
+	.dish--pizza .dish__media :global(img) {
+		width: min(118%, 980px);
+		rotate: -9deg;
+	}
+
+	.dish--pizza .dish__copy {
+		grid-column: 8 / 13;
+		padding-bottom: clamp(3rem, 7vw, 7rem);
+	}
+
+	/* ------------------------------------------------------------ 02 sánguches */
+	.dish--sanguches {
+		background: var(--color-ink);
+		color: var(--color-cream);
+	}
+
+	.dish--sanguches .dish__word {
+		top: clamp(2rem, 4vw, 3.5rem);
+		right: -0.05em;
+		color: transparent;
+		-webkit-text-stroke: 1.5px rgb(242 235 221 / 20%);
+	}
+
+	.dish--sanguches .dish__tagline {
+		color: var(--color-orange);
+	}
+
+	.dish--sanguches .dish__copy {
+		grid-column: 1 / 5;
+	}
+
+	.dish__pair {
+		grid-column: 5 / 13;
+		display: grid;
+		margin-right: calc(var(--page-gutter) * -0.5);
+	}
+
+	.dish__pair-item {
+		position: relative;
+	}
+
+	.dish__pair-item--milanesa {
+		width: 86%;
+		justify-self: end;
+	}
+
+	.dish__pair-item--milanesa :global(img) {
+		rotate: 4deg;
+	}
+
+	.dish__pair-item--lomito {
+		width: 72%;
+		margin-top: -15%;
+	}
+
+	.dish__pair-item--lomito :global(img) {
+		rotate: -5deg;
+	}
+
+	@media (hover: hover) {
+		.dish--sanguches:hover .dish__pair-item--milanesa :global(img) {
+			transform: translateY(-6px) rotate(1.5deg);
+		}
+	}
+
+	/* ------------------------------------------------------------ 03 hamburguesas */
+	.dish--burger {
+		background: var(--color-cream);
+	}
+
+	.dish--burger .dish__word {
+		inset-inline: 0;
+		top: 50%;
+		translate: 0 -54%;
+		color: var(--color-orange);
+		font-size: clamp(8rem, 26vw, 25rem);
+		text-align: center;
+	}
+
+	.dish--burger .dish__media {
+		grid-column: 4 / 10;
+		justify-self: center;
+		width: min(100%, 620px);
+	}
+
+	.dish--burger .dish__copy {
+		grid-column: 9 / 13;
+		align-self: end;
+		justify-self: end;
+	}
+
+	.dish--burger h3 {
+		font-size: clamp(2.5rem, 4.6vw, 4.5rem);
+	}
+
+	.dish__note {
+		position: relative;
+		z-index: 2;
+		grid-row: 1;
+		grid-column: 1 / 4;
+		align-self: start;
+		font-family: var(--font-editorial);
+		font-size: clamp(1.6rem, 2.7vw, 2.5rem);
+		font-style: italic;
+		rotate: -6deg;
+		transform-origin: left;
+	}
+
+	/* ------------------------------------------------------------ 04 napolitanas */
+	.dish--napo {
+		background: var(--color-orange);
+	}
+
+	.dish--napo .dish__word {
+		right: -0.06em;
+		bottom: -0.14em;
+		color: var(--color-cream);
+		font-size: clamp(9rem, 31vw, 30rem);
+	}
+
+	.dish--napo .dish__copy {
+		grid-column: 1 / 5;
+	}
+
+	.dish--napo .dish__media {
+		grid-column: 6 / 12;
+		justify-self: center;
+		width: min(100%, 560px);
+	}
+
+	.dish--napo .dish__media :global(img) {
+		rotate: 5deg;
+	}
+
+	.dish__button {
+		min-height: 50px;
+		display: inline-flex;
+		align-items: center;
+		gap: 20px;
+		margin-top: 2rem;
+		padding: 0 18px;
+		background: var(--color-ink);
+		color: var(--color-cream);
+		font-size: var(--text-small);
+		font-weight: 600;
+		text-decoration: none;
+		transition: background-color 180ms var(--ease-standard), color 180ms var(--ease-standard), transform 250ms var(--ease-standard);
+	}
+
+	.dish__button:hover {
+		background: var(--color-cream);
+		color: var(--color-ink);
+		transform: translateY(-2px);
+	}
+
+	.dish__button span {
+		font-size: 1.1rem;
+	}
+
+	/* ------------------------------------------------------------ scroll-driven drift (progressive) */
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: view()) {
+			.dish__word {
+				animation: word-drift linear both;
+				animation-timeline: view();
+			}
+
+			.dish--sanguches .dish__word,
+			.dish--napo .dish__word {
+				animation-name: word-drift-reverse;
+			}
+		}
+	}
+
+	@keyframes word-drift {
+		from { transform: translateX(6%); }
+		to { transform: translateX(-4%); }
+	}
+
+	@keyframes word-drift-reverse {
+		from { transform: translateX(-4%); }
+		to { transform: translateX(5%); }
+	}
+
+	/* ------------------------------------------------------------ tablet */
+	@media (max-width: 1080px) {
+		.dish--pizza .dish__media {
+			grid-column: 1 / 8;
+		}
+
+		.dish--pizza .dish__copy,
+		.dish--burger .dish__copy {
+			grid-column: 8 / 13;
+		}
+
+		.dish--burger .dish__media {
+			grid-column: 3 / 11;
+			width: min(100%, 420px);
+		}
+
+		.dish__note {
+			grid-column: 1 / 6;
+		}
+
+		.dish--sanguches .dish__copy,
+		.dish--napo .dish__copy {
+			grid-column: 1 / 6;
+		}
+
+		.dish__pair,
+		.dish--napo .dish__media {
+			grid-column: 6 / 13;
+		}
+	}
+
+	/* ------------------------------------------------------------ mobile */
+	@media (max-width: 760px) {
+		.specials__intro {
+			grid-template-columns: 1fr;
+			gap: 1.75rem;
+		}
+
+		.dish__inner {
+			grid-template-columns: minmax(0, 1fr);
+			min-height: 0;
+			row-gap: 1.75rem;
+			padding-block: 4.5rem 3.5rem;
+		}
+
+		.dish__inner > * {
+			grid-column: 1 !important;
+			grid-row: auto;
+		}
+
+		.dish__media,
+		.dish__copy,
+		.dish__note {
+			grid-row: auto;
+		}
+
+		.dish__word {
+			font-size: clamp(5.5rem, 31vw, 9rem) !important;
+		}
+
+		.dish h3 {
+			font-size: clamp(3.25rem, 15vw, 4.5rem);
+		}
+
+		.dish--pizza .dish__word {
+			top: 1.25rem;
+			bottom: auto;
+		}
+
+		.dish--pizza .dish__media {
+			margin-left: calc(var(--page-gutter) * -1 - 16vw);
+		}
+
+		.dish--pizza .dish__media :global(img) {
+			width: 112%;
+		}
+
+		.dish--pizza .dish__copy {
+			padding-bottom: 0;
+		}
+
+		.dish--sanguches .dish__word {
+			top: 1.25rem;
+		}
+
+		.dish--sanguches .dish__copy {
+			order: 2;
+		}
+
+		.dish__pair {
+			order: 1;
+			margin: 2.5rem 0 0;
+		}
+
+		.dish__pair-item--milanesa {
+			width: 94%;
+		}
+
+		.dish__pair-item--lomito {
+			width: 80%;
+			margin-top: -10%;
+		}
+
+		.dish--burger .dish__word {
+			top: 5.5rem;
+			translate: none;
+		}
+
+		.dish__note {
+			order: 1;
+			justify-self: end;
+			margin-top: -0.5rem;
+			font-size: 1.5rem;
+		}
+
+		.dish--burger .dish__copy {
+			order: 2;
+			justify-self: start;
+		}
+
+		.dish--burger .dish__media {
+			width: 88%;
+			margin-top: 3.5rem;
+		}
+
+		.dish--burger h3 {
+			font-size: clamp(3rem, 13vw, 4rem);
+		}
+
+		.dish--napo .dish__word {
+			top: auto;
+			bottom: -0.1em;
+		}
+
+		.dish--napo .dish__media {
+			order: -1;
+			width: 100%;
+		}
+
+		.dish--napo .dish__copy {
+			padding-bottom: 5rem;
+		}
+	}
+</style>

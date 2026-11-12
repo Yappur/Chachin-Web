@@ -1,0 +1,58 @@
+<section class="identity-band" aria-label="La esencia de Chachín">
+	<ul class="identity-band__list page-container">
+		<li>Buenos momentos</li>
+		<li aria-hidden="true">✳</li>
+		<li>Comida rica</li>
+		<li aria-hidden="true">✳</li>
+		<li>Amigos y familia</li>
+	</ul>
+</section>
+
+<style>
+	.identity-band {
+		position: relative;
+		z-index: 1;
+		background: var(--color-cream);
+		color: var(--color-ink);
+	}
+
+	.identity-band__list {
+		min-height: 86px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 0.75rem;
+		list-style: none;
+	}
+
+	.identity-band__list li:nth-child(odd) {
+		font-family: var(--font-display);
+		font-size: clamp(1.375rem, 2.6vw, 2.25rem);
+		line-height: 1;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.identity-band__list li:nth-child(even) {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 700px) {
+		.identity-band__list {
+			min-height: 0;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 0.75rem 1rem;
+			padding-block: 1.125rem;
+		}
+
+		.identity-band__list li:nth-child(odd) {
+			font-size: clamp(1.1rem, 5vw, 1.4rem);
+		}
+
+		.identity-band__list li:nth-child(even) {
+			font-size: 0.9rem;
+		}
+	}
+</style>

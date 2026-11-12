@@ -20,3 +20,59 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+## Design Context
+
+### Users
+Personas de Concepción y alrededores que consultan la landing para conocer Chachín en su nueva ubicación, mirar la propuesta gastronómica y decidir cómo visitarlo o contactarlo. El sitio debe responder rápido qué ofrece el bar, dónde está, qué hay en la carta y cómo acercarse. No inventar dirección, horarios, platos, precios, reseñas ni redes sociales; faltan esos datos reales.
+
+### Brand Personality
+**Cercana, sabrosa, urbana.** Un bar-restaurante renovado que conserva su esencia y celebra la comida rica, los buenos momentos y los encuentros con amigos y familia. Voz en español rioplatense, cálida y conversacional; evitar el tono corporativo o excesivamente promocional.
+
+### Aesthetic Direction
+**Dirección elegida: propuesta visual 2, “La mesa servida”.** Es la referencia rectora de toda la landing. La idea es una mesa que se vuelve a abrir en una nueva casa: un gran campo naranja, el titular editorial a la izquierda y la pizza como imagen protagonista a la derecha. La navegación queda liviana arriba; la franja crema inferior cierra el primer cuadro con mensajes gigantes en Anton.
+
+Conservar esta composición de apertura, su contraste carbón/naranja/crema, el uso de Instrument Serif Italic como acento cálido, el logo original y las fotografías de `/public/foods`. Extender esos recursos al resto del sitio mediante franjas identitarias, bloques editoriales y fotografías amplias. No importar la composición monumental, la tarjeta tipo carta, la cuadrícula abierta ni los cambios de tono de las otras cuatro propuestas. Hell’s Pizza sigue siendo referencia secundaria para el protagonismo gastronómico, nunca para copiar su identidad o layout.
+
+#### Sistema visual
+
+| Rol | Valor | Uso |
+| --- | --- | --- |
+| Carbón `--color-ink` | `#252525` | Titulares y texto sobre naranja o crema; botones primarios; fondos de cierre. |
+| Crema `--color-cream` | `#F2EBDD` | Texto sobre carbón, paneles cálidos y franja identitaria. |
+| Naranja `--color-orange` | `#EF6A2E` | Fondo protagonista del Hero y acentos de marca. |
+| Gris medio `--color-muted` | `#77736D` | Texto secundario solo en fondos donde conserve contraste suficiente. |
+
+- **Tipografía:** Anton para titulares, palabras gigantes, mensajes publicitarios y la franja identitaria. Instrument Serif Italic para frases breves de énfasis y contraste editorial. Inter para navegación, texto corrido, etiquetas y controles.
+- **Escala implementada:** Hero Anton `clamp(4.25rem, 9.5vw, 9.25rem)`; títulos de sección `clamp(3rem, 1.5rem + 5vw, 6rem)`; frases Instrument fluidas según composición; cuerpo 16–18px; etiquetas y captions desde 13px con tracking moderado.
+- **Ritmo de espaciado:** escala base de 4px: `4, 8, 12, 16, 24, 32, 48, 64, 80, 96px`. Márgenes laterales de 4–6vw en desktop, limitados a 64px; 18–22px en móvil.
+- **Contenedores:** ancho máximo `94rem`; márgenes fluidos entre 18px y 64px. El Hero conserva el split editorial con cerca de 44% para copy y 56% para fotografía; alinear navegación, copy y franjas al mismo eje exterior.
+- **Botones:** geometría cuadrada, sin pastillas. Primario carbón con texto crema; secundario transparente con borde carbón. Altura mínima de 44px, texto Inter semibold y estados hover/focus visibles.
+- **Tarjetas y superficies:** no construir una colección de tarjetas genéricas. Para agrupar platos o información, usar paneles crema de esquinas rectas, bordes discretos y fotografías grandes; reservar sombras para separar imágenes, no para decorar contenedores.
+- **Fotografía:** imagen gastronómica real y dominante, con recorte intencional y espacio libre alrededor del titular. Usar las fotos de comida de `/public/foods` (recortes con fondo transparente) y el logo de `/public/Logo_Chachin.png`; no cubrir texto ni inventar fotos del local o del equipo.
+- **Franja identitaria:** banda horizontal crema con mensajes en Anton carbón, grande y de lectura inmediata. En móvil refluye a líneas legibles o mensajes abreviados; no ocultar contenido en un ticker que dependa del movimiento.
+- **Contraste:** sobre naranja priorizar texto carbón. Reservar crema para carbón oscuro o superficies donde el contraste pase revisión; no usar gris medio como cuerpo sobre naranja.
+- **Movimiento:** transiciones breves y sutiles, de 150–250ms, para hover o entrada de imagen. Respetar `prefers-reduced-motion`; nada debe depender de una animación para comunicar.
+- **Responsive:** desktop mantiene el split copy/foto; tablet lo estrecha sin superponer capas; móvil conserva el campo naranja, apila titular, texto, acción e imagen, y deja navegación en una sola fila. Mantener titulares en dos líneas como máximo, áreas táctiles de 44px y sin desbordamiento horizontal.
+
+### Implementation Defaults
+- Estructura detectada: Astro + TypeScript estricto. Seguir con componentes Astro, HTML semántico y CSS local.
+- No hay Tailwind, framework de estilos, biblioteca de componentes ni librerías de formularios/tablas/virtualización; no incorporar dependencias innecesarias.
+- El layout define `lang="es-AR"`, títulos, descripciones, carga de fuentes y el logo como favicon.
+- La propuesta 2 se implementó como dirección única de la landing; la ruta temporal `/propuestas` se retiró tras aplicar la selección.
+- El sistema compartido está en `src/styles/tokens.css` y `src/styles/global.css`; la página se compone de componentes Astro en `src/components/`.
+- Precedencia: stack detectado; preferencias explícitas del usuario; valores de fallback del framework.
+
+### Design Principles
+1. **La comida conduce la mirada:** dar a la fotografía gastronómica el espacio visual dominante y protegerla de competir con el titular.
+2. **Una composición editorial coherente:** repetir el split naranja de copy e imagen como gramática; variar proporción y escala según contenido, sin cambiar a layouts de otras propuestas.
+3. **Anton define la voz visual:** reservar su peso para titulares, mensajes cortos y franjas; Inter mantiene la lectura cotidiana y la Serif Italic aporta acento, no bloques largos.
+4. **El contraste organiza el color:** carbón lleva lectura sobre naranja; crema separa y destaca sobre carbón o en superficies claras; naranja sigue siendo un campo de marca, no un adorno aleatorio.
+5. **Cercanía mediante datos reales:** orientar a menú, nueva ubicación y visita con copy simple; confirmar cualquier dato comercial antes de publicarlo.
+
+### Implementation Notes
+- Tokens y reglas globales: `src/styles/tokens.css`, `src/styles/global.css`.
+- Estructura de página: `src/pages/index.astro`; metadatos, fuentes y favicon: `src/layouts/Layout.astro`.
+- Componentes activos: `Hero.astro`, `SiteHeader.astro`, `IdentityBand.astro`, `FoodSection.astro`, `StorySection.astro`, `VisitSection.astro` y `SiteFooter.astro`.
+- Para completar la información de visita y carta, solicitar dirección, horarios, menú, precios y contacto reales; no usar muestras como datos finales.
+- Especialidades (`FoodSection.astro`, `#sabores`): propuesta A “Capítulos de la carta”, aprobada. Intro crema con enlaces de ancla y cuatro capítulos a sangre con color propio (Pizzas naranja, Sánguches carbón, Hamburguesas crema, Napolitanas naranja), palabra gigante en Anton detrás del recorte y fotos optimizadas con `<Picture>` (AVIF + fallback WebP) desde `src/assets/foods/`; el Hero sigue usando `/public/foods`. No implementar numeración visible para identificar los capítulos o secciones de la carta (por ejemplo, `01 — 04` o índices numerados); identificar cada sección por su título y posición. Deriva horizontal de la palabra gigante con `animation-timeline: view()` solo si hay soporte y sin `prefers-reduced-motion`.

@@ -1,0 +1,100 @@
+<header class="site-header page-container">
+	<a class="site-header__brand" href="#inicio" aria-label="Chachín, inicio">
+		<img src="/Logo_Chachin.png" alt="Chachín" width="512" height="512" />
+	</a>
+
+	<nav class="site-header__nav" aria-label="Navegación principal">
+		<a href="#sabores">La propuesta</a>
+		<a href="#chachin">Nuestra casa</a>
+		<a href="#visitanos">Encontranos</a>
+	</nav>
+
+	<a class="site-header__action" href="#visitanos">Venite a conocer <span aria-hidden="true">↗</span></a>
+</header>
+
+<style>
+	.site-header {
+		position: relative;
+		z-index: 2;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		min-height: 92px;
+	}
+
+	.site-header__brand {
+		width: 62px;
+		aspect-ratio: 1;
+		display: block;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+
+	.site-header__brand img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.site-header__nav {
+		display: flex;
+		align-items: center;
+		gap: clamp(1.25rem, 3vw, 3.25rem);
+	}
+
+	.site-header__nav a,
+	.site-header__action {
+		font-size: 0.8125rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.site-header__nav a {
+		text-underline-offset: 0.3em;
+	}
+
+	.site-header__nav a:hover {
+		text-decoration: underline;
+	}
+
+	.site-header__action {
+		justify-self: end;
+		min-height: 46px;
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		padding: 0 17px;
+		border: 1px solid var(--color-ink);
+		transition: background-color 180ms var(--ease-standard), color 180ms var(--ease-standard);
+	}
+
+	.site-header__action:hover {
+		background: var(--color-ink);
+		color: var(--color-cream);
+	}
+
+	.site-header__action span {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 700px) {
+		.site-header {
+			grid-template-columns: 1fr auto;
+			min-height: 76px;
+		}
+
+		.site-header__brand {
+			width: 52px;
+		}
+
+		.site-header__nav {
+			display: none;
+		}
+
+		.site-header__action {
+			min-height: 44px;
+			padding-inline: 12px;
+			font-size: 0.8125rem;
+		}
+	}
+</style>

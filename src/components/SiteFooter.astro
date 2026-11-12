@@ -1,0 +1,70 @@
+<footer class="site-footer">
+	<div class="site-footer__inner page-container">
+		<a class="site-footer__brand" href="#inicio" aria-label="Chachín, volver al inicio">
+			<img src="/Logo_Chachin.png" alt="Chachín" width="512" height="512" loading="lazy" />
+		</a>
+		<p>Bar-restaurante<br />Concepción, Tucumán</p>
+		<a class="site-footer__top" href="#inicio">Volver arriba <span aria-hidden="true">↑</span></a>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--color-cream);
+		color: var(--color-ink);
+	}
+
+	.site-footer__inner {
+		min-height: 138px;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.site-footer__brand {
+		width: 64px;
+		height: 64px;
+		display: block;
+		overflow: hidden;
+		border-radius: 50%;
+	}
+
+	.site-footer__brand img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.site-footer__inner p {
+		font-size: 0.8125rem;
+		line-height: 1.5;
+	}
+
+	.site-footer__top {
+		justify-self: end;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		font-size: 0.8125rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.site-footer__top span {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 560px) {
+		.site-footer__inner {
+			min-height: 120px;
+			grid-template-columns: auto 1fr;
+			padding-block: 1.5rem;
+		}
+
+		.site-footer__top {
+			grid-column: 2;
+			justify-self: start;
+		}
+	}
+</style>

@@ -1,11 +1,23 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import FoodSection from '../components/FoodSection.astro';
+import Hero from '../components/Hero.astro';
+import IdentityBand from '../components/IdentityBand.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import StorySection from '../components/StorySection.astro';
+import VisitSection from '../components/VisitSection.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Chachín | Comida rica y buenos momentos en Concepción"
+	description="Chachín, bar-restaurante en Concepción, Tucumán. Una casa nueva para compartir comida rica y buenos momentos."
+>
+	<main>
+		<Hero />
+		<IdentityBand />
+		<FoodSection />
+		<StorySection />
+		<VisitSection />
+	</main>
+	<SiteFooter />
 </Layout>

@@ -1,0 +1,86 @@
+<section class="story-section" id="chachin" aria-labelledby="story-title">
+	<div class="story-section__inner page-container">
+		<div class="story-section__headline">
+			<p class="story-section__eyebrow">Una casa nueva</p>
+			<h2 id="story-title">La esencia<br />de <em>siempre.</em></h2>
+		</div>
+		<div class="story-section__body">
+			<p>
+				Chachín se renueva y cambia de dirección. La cercanía, la comida rica y las ganas de encontrarnos siguen siendo parte de la casa.
+			</p>
+			<a href="#visitanos" class="story-section__link">Nos vemos en Chachín <span aria-hidden="true">↗</span></a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.story-section {
+		padding-block: clamp(5.5rem, 12vw, 11rem);
+		background: var(--color-ink);
+		color: var(--color-cream);
+	}
+
+	.story-section__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.6fr);
+		align-items: end;
+		gap: clamp(2rem, 8vw, 8rem);
+	}
+
+	.story-section__eyebrow {
+		margin-bottom: 1.5rem;
+		color: var(--color-orange);
+		font-size: 0.8125rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.story-section h2 {
+		font-family: var(--font-display);
+		font-size: clamp(4rem, 8.8vw, 8.25rem);
+		letter-spacing: -0.035em;
+		line-height: 0.9;
+	}
+
+	.story-section h2 em {
+		color: var(--color-orange);
+		font-family: var(--font-editorial);
+		font-weight: 400;
+		letter-spacing: -0.045em;
+	}
+
+	.story-section__body p {
+		max-width: 37ch;
+		font-size: var(--text-lead);
+		line-height: 1.45;
+	}
+
+	.story-section__link {
+		min-height: 46px;
+		display: inline-flex;
+		align-items: center;
+		gap: 1rem;
+		margin-top: 1.75rem;
+		padding: 0 0.25rem;
+		border-bottom: 1px solid var(--color-cream);
+		font-size: 0.8125rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.story-section__link span {
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 760px) {
+		.story-section__inner {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+
+		.story-section h2 {
+			font-size: clamp(4rem, 16vw, 6rem);
+		}
+	}
+</style>
