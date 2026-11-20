@@ -1,0 +1,247 @@
+---
+/**
+ * Pizzas apoyadas sobre un mismo piso, vistas desde una cámara apenas elevada.
+ * - La primera es la principal: a la derecha, en primer plano y la más grande.
+ * - Las demás retroceden hacia abajo y a la izquierda, cada vez más chicas y detrás de la anterior.
+ * - Cada paso tiene su propio ángulo, distancia y escala: el recorrido es progresivo pero NO una recta.
+ * - Las fotos se usan INTACTAS: sin deformar, girar, inclinar ni filtrar. Solo cambian escala y posición.
+ * - La sensación de "apoyadas" sale de una sombra de contacto independiente, debajo de cada imagen.
+ */
+import type { ImageMetadata } from 'astro';
+import { Picture } from 'astro:assets';
+
+interface PizzaItem {
+	src: ImageMetadata;
+	alt?: string;
+}
+
+/** Cómo se ubica cada pizza respecto de la anterior. */
+interface Step {
+	/** Grados por debajo de la horizontal hacia la izquierda. */
+	angle: number;
+	/** Distancia entre centros relativa a la suma de radios (< 1 = se superponen). */
+	spacing: number;
+	/** Escala respecto de la pizza anterior. */
+	shrink: number;
+}
+
+interface Props {
+	items: PizzaItem[];
+	/** Un paso por cada pizza secundaria. Variarlos evita la alineación geométrica. */
+	steps?: Step[];
+	trigger?: 'load' | 'scroll';
+	sizes?: string;
+	priority?: boolean;
+	class?: string;
+}
+
+const defaultSteps: Step[] = [
+	{ angle: 24, spacing: 0.6, shrink: 0.74 },
+	{ angle: 41, spacing: 0.66, shrink: 0.81 },
+	{ angle: 19, spacing: 0.58, shrink: 0.78 },
+	{ angle: 36, spacing: 0.64, shrink: 0.8 },
+];
+
+const {
+	items,
+	steps = defaultSteps,
+	trigger = 'load',
+	sizes = '50vw',
+	priority = false,
+	class: className,
+} = Astro.props;
+
+// Geometría en unidades del ancho de la pizza principal
+type Center = { x: number; y: number; size: number };
+const centers: Center[] = [{ x: 0, y: 0, size: 1 }];
+for (let i = 1; i < items.length; i++) {
+	const prev = centers[i - 1];
+	const step = steps[(i - 1) % steps.length];
+	const size = prev.size * step.shrink;
+	const rad = (step.angle * Math.PI) / 180;
+	const dist = ((prev.size + size) / 2) * step.spacing;
+	centers.push({
+		x: prev.x - Math.cos(rad) * dist,
+		y: prev.y + Math.sin(rad) * dist,
+		size,
+	});
+}
+
+// Caja que encierra todo: la composición la llena exacta
+const halfH = (c: Center) => c.size / 2;
+const minX = Math.min(...centers.map((c) => c.x - c.size / 2));
+const maxX = Math.max(...centers.map((c) => c.x + c.size / 2));
+const minY = Math.min(...centers.map((c) => c.y - halfH(c)));
+// Margen extra abajo para que entren las sombras de contacto
+const maxY = Math.max(...centers.map((c) => c.y + halfH(c) + c.size * 0.06));
+const boxW = maxX - minX;
+const boxH = maxY - minY;
+
+const round = (n: number) => Math.round(n * 1000) / 1000;
+const main = centers[0];
+
+const pizzas = items.map((item, i) => {
+	const c = centers[i];
+	const vx = c.x - main.x;
+	const vy = c.y - main.y;
+	const len = Math.hypot(vx, vy) || 1;
+	return {
+		...item,
+		style: [
+			`--i: ${i}`,
+			`--x: ${round(((c.x - minX) / boxW) * 100)}%`,
+			`--y: ${round(((c.y - minY) / boxH) * 100)}%`,
+			`--w: ${round((c.size / boxW) * 100)}%`,
+			// Para la animación: salir desde detrás de la principal (en % del propio tamaño)
+			`--back-x: ${round((-vx / c.size) * 100)}%`,
+			`--back-y: ${round((-vy / c.size) * 100)}%`,
+			// Dirección propia hacia el fondo (para el hover)
+			`--ox: ${round(vx / len)}`,
+			`--oy: ${round(vy / len)}`,
+			`--depth: ${round(1 - c.size)}`,
+		].join('; '),
+	};
+});
+
+const rootStyle = `--box-ratio: ${round(boxW)} / ${round(boxH)};`;
+---
+
+<div class:list={['cascade', `cascade--${trigger}`, className]} style={rootStyle}>
+	{pizzas.map((pizza, i) => (
+		<figure class="cascade__item" style={pizza.style} aria-hidden={pizza.alt ? undefined : 'true'}>
+			<div class="cascade__motion">
+				<span class="cascade__shadow" aria-hidden="true"></span>
+				<div class="cascade__plane">
+					<Picture
+						src={pizza.src}
+						formats={['avif']}
+						fallbackFormat="webp"
+						widths={[320, 520, 800, 1024]}
+						sizes={sizes}
+						alt={pizza.alt ?? ''}
+						loading={priority && i === 0 ? 'eager' : 'lazy'}
+						fetchpriority={priority && i === 0 ? 'high' : undefined}
+						decoding="async"
+					/>
+				</div>
+			</div>
+		</figure>
+	))}
+</div>
+
+<style>
+	.cascade {
+		position: relative;
+		width: 100%;
+		aspect-ratio: var(--box-ratio);
+	}
+
+	.cascade__item {
+		position: absolute;
+		/* La más cercana (--i: 0) tapa a las de atrás */
+		z-index: calc(20 - var(--i));
+		left: var(--x);
+		top: var(--y);
+		width: var(--w);
+		aspect-ratio: 1;
+		margin: 0;
+		translate: -50% -50%;
+	}
+
+	.cascade__motion {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transition: transform 360ms var(--ease-standard);
+		transition-delay: calc(var(--i) * 40ms);
+	}
+
+	/* Sombra de contacto: un elemento aparte, debajo de la foto. La foto no se toca */
+	.cascade__shadow {
+		position: absolute;
+		z-index: 0;
+		left: 10%;
+		right: 10%;
+		bottom: -3%;
+		height: 20%;
+		border-radius: 50%;
+		background: radial-gradient(closest-side, rgb(60 22 6 / calc(42% - var(--depth) * 12%)), rgb(60 22 6 / 0%));
+		filter: blur(10px);
+	}
+
+	.cascade__plane {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+	}
+
+	.cascade__plane :global(picture),
+	.cascade__plane :global(img) {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	/* Imagen intacta: anula cualquier filtro o transform genérico de las secciones */
+	.cascade__plane :global(img) {
+		object-fit: contain;
+		filter: none !important;
+		transform: none !important;
+		rotate: none;
+	}
+
+	/* Hover: cada pizza se aleja apenas por su propio camino hacia el fondo, sin despegarse del piso */
+	@media (hover: hover) {
+		.cascade:hover .cascade__motion {
+			transform: translate(calc(var(--ox) * var(--i) * 3%), calc(var(--oy) * var(--i) * 3%));
+		}
+	}
+
+	/* Entrada: las de atrás se deslizan desde detrás de la principal sobre el piso */
+	@keyframes cascade-in {
+		from {
+			opacity: 0;
+			transform: translate(var(--back-x), var(--back-y));
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@keyframes cascade-main-in {
+		from {
+			opacity: 0;
+			transform: translateY(4%);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.cascade--load .cascade__item {
+			animation: cascade-in 950ms var(--ease-standard) both;
+			animation-delay: calc(250ms + var(--i) * 150ms);
+		}
+
+		.cascade--load .cascade__item:first-child {
+			animation-name: cascade-main-in;
+			animation-delay: 0ms;
+		}
+
+		@supports (animation-timeline: view()) {
+			.cascade--scroll .cascade__item {
+				animation: cascade-in linear both;
+				animation-timeline: view();
+				animation-range: entry calc(10% + var(--i) * 8%) cover 42%;
+			}
+
+			.cascade--scroll .cascade__item:first-child {
+				animation-name: cascade-main-in;
+			}
+		}
+	}
+</style>
