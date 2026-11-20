@@ -1,10 +1,4 @@
----
-import SiteHeader from './SiteHeader.astro';
----
-
 <section class="hero" id="inicio" aria-labelledby="hero-title">
-	<SiteHeader />
-
 	<div class="hero__layout page-container">
 		<div class="hero__copy">
 			<p class="hero__eyebrow">Nueva casa en Concepción, Tucumán</p>
@@ -41,7 +35,7 @@ import SiteHeader from './SiteHeader.astro';
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		min-height: min(830px, 100svh);
+		min-height: min(740px, calc(100svh - 92px));
 		overflow: hidden;
 		background: var(--color-orange);
 		color: var(--color-ink);
@@ -125,30 +119,34 @@ import SiteHeader from './SiteHeader.astro';
 		font-style: italic;
 	}
 
+	/* Efecto dominó: la pizza grande adelante, la chica detrás tirando a la izquierda */
 	.hero__visual {
 		position: relative;
 		width: 100%;
 		min-height: clamp(400px, 47vw, 650px);
 		display: grid;
-		place-items: center;
+		place-items: center end;
 	}
 
 	.hero__pizza {
-		filter: drop-shadow(0 22px 24px rgb(37 37 37 / 14%));
+		filter: drop-shadow(0 22px 24px rgb(37 37 37 / 18%));
 	}
 
 	.hero__pizza--main {
-		width: min(100%, 620px);
-		margin-left: auto;
+		position: relative;
+		z-index: 2;
+		width: min(78%, 540px);
 		transform: rotate(3deg);
 	}
 
 	.hero__pizza--second {
 		position: absolute;
-		bottom: 4%;
-		left: 0;
-		width: clamp(150px, 27%, 260px);
-		transform: rotate(-10deg);
+		z-index: 1;
+		top: 50%;
+		left: 2%;
+		width: min(50%, 350px);
+		transform: translateY(-62%) rotate(-12deg);
+		filter: drop-shadow(0 14px 18px rgb(37 37 37 / 16%)) brightness(0.92);
 	}
 
 	@media (max-width: 850px) {
@@ -178,13 +176,12 @@ import SiteHeader from './SiteHeader.astro';
 		}
 
 		.hero__pizza--main {
-			width: min(82%, 530px);
-			margin-left: 10%;
+			width: min(74%, 480px);
 		}
 
 		.hero__pizza--second {
-			left: 5%;
-			width: clamp(140px, 28%, 220px);
+			left: 2%;
+			width: min(48%, 310px);
 		}
 	}
 
@@ -227,14 +224,12 @@ import SiteHeader from './SiteHeader.astro';
 		}
 
 		.hero__pizza--main {
-			width: 88%;
-			margin-left: 8%;
+			width: 76%;
 		}
 
 		.hero__pizza--second {
-			bottom: 1%;
-			left: -1%;
-			width: 34%;
+			left: -2%;
+			width: 50%;
 		}
 	}
 </style>

@@ -1,0 +1,180 @@
+---
+import { Image } from 'astro:assets';
+import restaurant from '../assets/chachin-local.PNG';
+
+interface Props {
+	variant: 1 | 2 | 3 | 4 | 5;
+	id?: string;
+}
+
+const { variant, id } = Astro.props;
+const copy = {
+	1: { title: 'La mesa queda', titleNext: 'por', accent: 'acá.', photo: 'Una casa nueva.', photoAccent: 'La misma mesa larga.', intro: 'En Concepción, donde Shipton se cruza con Bernardino Rivadavia.' },
+	2: { title: 'Concepción', titleNext: 'nos queda', accent: 'cerca.', photo: 'Esta es', photoAccent: 'nuestra casa.', intro: 'Chachín, entre Shipton y Bernardino Rivadavia. Te esperamos en Concepción.' },
+	3: { title: 'Una dirección', titleNext: 'para volver', accent: 'siempre.', photo: 'Chachín', photoAccent: 'por dentro.', intro: 'Restaurante Chachín · Concepción, Tucumán' },
+	4: { title: 'Venite', titleNext: 'hasta', accent: 'acá.', photo: 'Nos vemos', photoAccent: 'en la mesa.', intro: 'Entre Shipton y Bernardino Rivadavia, en Concepción.' },
+	5: { title: 'La casa', titleNext: 'está', accent: 'abierta.', photo: 'Un lugar', photoAccent: 'para encontrarse.', intro: 'Restaurante Chachín. Concepción, Tucumán.' },
+}[variant];
+---
+
+<section id={id} class:list={['visit-option', `visit-option--${variant}`]} aria-labelledby={`visit-title-${variant}`}>
+	<figure class="visit-option__photo">
+		<Image src={restaurant} alt="El restaurante Chachín en Concepción, Tucumán" widths={[720, 1080, 1600, 2200]} sizes="(max-width: 760px) 100vw, 58vw" loading="lazy" decoding="async" />
+		<figcaption><span>Restaurante Chachín</span><span>Concepción · Tucumán</span></figcaption>
+		<p class="visit-option__photo-line">{copy.photo}<br /><em>{copy.photoAccent}</em></p>
+	</figure>
+
+	<header class="visit-option__heading">
+		<p class="visit-option__eyebrow">Vení a encontrarnos</p>
+		<h2 id={`visit-title-${variant}`}>{copy.title}<br />{copy.titleNext} <em>{copy.accent}</em></h2>
+		<p class="visit-option__intro">{copy.intro}</p>
+	</header>
+
+	<div class="visit-option__map">
+		<iframe
+			title="Mapa para llegar al Restaurante Chachín, en Concepción, Tucumán"
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3543.881867632824!2d-65.59570538598271!3d-27.348161480181084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9423cff9cfac225b%3A0xb22fd98772e6b58c!2sChachin!5e0!3m2!1ses-419!2sar!4v1794694613474!5m2!1ses-419!2sar"
+			loading="lazy"
+			referrerpolicy="strict-origin-when-cross-origin"
+			allowfullscreen
+		></iframe>
+		<span>Encontranos en el mapa</span>
+	</div>
+
+	<div class="visit-option__contact">
+		<div class="visit-option__address">
+			<span class="visit-option__label">Restaurante Chachín</span>
+			<address>Entre Shipton y<br />Bernardino Rivadavia<br />Concepción, Tucumán</address>
+		</div>
+		<div class="visit-option__phone">
+			<span class="visit-option__label">Llamanos</span>
+			<a class="visit-option__number" href="tel:03865269502">0386 526 9502</a>
+			<div class="visit-option__actions">
+				<a class="visit-option__call" href="tel:03865269502">Llamar <span aria-hidden="true">↗</span></a>
+				<a class="visit-option__whatsapp" href="https://wa.me/5493865269502" target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">↗</span></a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.visit-option {
+		--g: clamp(1.125rem, 4.5vw, 4rem);
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+		gap: clamp(1.5rem, 4vw, 4rem);
+		padding: clamp(2rem, 5vw, 4.5rem) var(--g);
+		background: var(--color-ink);
+		color: var(--color-cream);
+	}
+
+	.visit-option__photo { position: relative; min-width: 0; margin: 0; overflow: hidden; background: #51463b; }
+	.visit-option__photo img { display: block; width: 100%; height: 100%; min-height: 350px; object-fit: cover; }
+	.visit-option__photo::after { position: absolute; inset: 40% 0 0; background: linear-gradient(0deg, rgb(20 18 16 / 65%), transparent 75%); content: ''; pointer-events: none; }
+	.visit-option__photo figcaption { position: absolute; z-index: 1; top: 1rem; left: 1rem; display: flex; flex-wrap: wrap; gap: .5rem 1rem; color: white; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+	.visit-option__photo-line { position: absolute; z-index: 1; right: 1.25rem; bottom: 1.25rem; color: white; font: clamp(2rem, 4.5vw, 4.5rem)/.9 var(--font-display); text-align: right; text-transform: uppercase; }
+	.visit-option__photo-line em { color: var(--color-orange); font: italic .8em/.95 var(--font-editorial); text-transform: none; }
+	.visit-option__heading { align-self: end; }
+	.visit-option__eyebrow,.visit-option__label { font-size: var(--text-small); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+	.visit-option__eyebrow { margin-bottom: 1rem; color: var(--color-orange); }
+	.visit-option__heading h2 { font: clamp(3.5rem, 6vw, 6rem)/.88 var(--font-display); letter-spacing: -.035em; }
+	.visit-option__heading h2 em { color: var(--color-orange); font: 400 .92em/.95 var(--font-editorial); letter-spacing: -.045em; }
+	.visit-option__intro { max-width: 32ch; margin-top: 1.4rem; font-size: var(--text-lead); line-height: 1.4; }
+	.visit-option__map { position: relative; min-height: 390px; background: #d4c8b4; }
+	.visit-option__map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; filter: saturate(.76) contrast(1.03); }
+	.visit-option__map > span { position: absolute; z-index: 1; bottom: .75rem; left: .75rem; padding: .5rem .7rem; background: var(--color-ink); color: var(--color-cream); font-size: .7rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; pointer-events: none; }
+	.visit-option__contact { display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem; padding: clamp(1.35rem, 2.4vw, 2.25rem); background: var(--color-orange); color: var(--color-ink); }
+	.visit-option__address address { margin-top: .65rem; font-size: 1.125rem; font-style: normal; line-height: 1.5; }
+	.visit-option__phone { padding-top: 1.2rem; border-top: 1px solid rgb(37 37 37 / 32%); }
+	.visit-option__number { display: block; width: fit-content; margin-top: .3rem; font: clamp(1.8rem, 2.6vw, 2.6rem)/1.1 var(--font-display); text-decoration: none; white-space: nowrap; }
+	.visit-option__actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
+	.visit-option__call,.visit-option__whatsapp { min-height: 48px; display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0 1rem; font-size: .8125rem; font-weight: 600; text-decoration: none; transition: background-color 180ms var(--ease-standard), color 180ms var(--ease-standard), transform 180ms var(--ease-standard); }
+	.visit-option__call { background: var(--color-ink); color: var(--color-cream); }
+	.visit-option__whatsapp { border: 1px solid var(--color-ink); }
+	.visit-option__call:hover,.visit-option__whatsapp:hover { transform: translateY(-2px); background: var(--color-cream); color: var(--color-ink); }
+
+	/* 1 · Mesa abierta: fotografía panorámica, luego datos asimétricos. */
+	.visit-option--1 { grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: 2rem clamp(2rem, 6vw, 6rem); padding: 0; }
+	.visit-option--1 .visit-option__photo { grid-column: 1 / -1; height: clamp(400px, 55vw, 710px); }
+	.visit-option--1 .visit-option__heading { padding: 1rem 0 1rem var(--g); }
+	.visit-option--1 .visit-option__map { grid-column: 2; grid-row: 2 / span 2; min-height: 520px; margin-right: var(--g); }
+	.visit-option--1 .visit-option__contact { grid-column: 1; margin: 0 0 0 var(--g); }
+	.visit-option--1 .visit-option__heading h2 { font-size: clamp(3.5rem, 6.3vw, 6.25rem); }
+
+	/* 2 · La esquina: foto vertical y mapa/contacto en una columna práctica. */
+	.visit-option--2 { grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr); align-items: stretch; }
+	.visit-option--2 .visit-option__photo { grid-column: 1; grid-row: 1 / span 3; min-height: 780px; }
+	.visit-option--2 .visit-option__heading { grid-column: 2; align-self: start; padding: 1rem 0; }
+	.visit-option--2 .visit-option__heading h2 { font-size: clamp(3.5rem, 5.3vw, 5.5rem); }
+	.visit-option--2 .visit-option__map { grid-column: 2; min-height: 310px; }
+	.visit-option--2 .visit-option__contact { grid-column: 2; }
+
+	/* 3 · La dirección: papel crema, titular tipográfico y foto recortada. */
+	.visit-option--3 { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; background: var(--color-cream); color: var(--color-ink); }
+	.visit-option--3 .visit-option__heading { grid-column: 1; grid-row: 1; padding: 2rem 0; }
+	.visit-option--3 .visit-option__heading h2 { font-size: clamp(3.5rem, 6vw, 6rem); }
+	.visit-option--3 .visit-option__photo { grid-column: 2; grid-row: 1 / span 2; min-height: 600px; }
+	.visit-option--3 .visit-option__photo-line em { color: var(--color-orange); }
+	.visit-option--3 .visit-option__map { grid-column: 1; grid-row: 2; min-height: 360px; }
+	.visit-option--3 .visit-option__contact { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; margin-top: .5rem; }
+	.visit-option--3 .visit-option__phone { padding: 0 0 0 2rem; border-top: 0; border-left: 1px solid rgb(37 37 37 / 32%); }
+
+	/* 4 · A la vuelta: titular + foto chica arriba, mapa grande y centrado, contacto centrado abajo. */
+	.visit-option--4 { --px: max(var(--g), calc((100% - 1180px) / 2)); grid-template-columns: minmax(0, 1fr) minmax(220px, 360px); align-items: end; gap: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 5vw, 4rem); padding: clamp(3.5rem, 7vw, 6rem) var(--px) 0; background: var(--color-cream); color: var(--color-ink); }
+	.visit-option--4 .visit-option__heading { grid-column: 1; grid-row: 1; align-self: end; padding: 0; }
+	.visit-option--4 .visit-option__photo { grid-column: 2; grid-row: 1; align-self: end; aspect-ratio: 4 / 3; min-height: 0; rotate: 2.5deg; box-shadow: 0 20px 40px rgb(37 37 37 / 22%); outline: 6px solid #fff; }
+	.visit-option--4 .visit-option__photo img { min-height: 0; }
+	.visit-option--4 .visit-option__photo figcaption { display: none; }
+	.visit-option--4 .visit-option__photo-line { right: .8rem; bottom: .7rem; font-size: clamp(1.15rem, 1.8vw, 1.6rem); }
+	.visit-option--4 .visit-option__map { grid-column: 1 / -1; grid-row: 2; width: 100%; min-height: clamp(440px, 50vw, 640px); margin: 0; box-shadow: 0 24px 50px rgb(37 37 37 / 18%); }
+	.visit-option--4 .visit-option__contact { grid-column: 1 / -1; grid-row: 3; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2rem clamp(2.5rem, 7vw, 6rem); margin-top: clamp(1rem, 3vw, 2.5rem); padding: clamp(2.5rem, 5vw, 3.5rem) 0; background: var(--color-ink); color: var(--color-cream); text-align: center; box-shadow: 0 0 0 100vmax var(--color-ink); clip-path: inset(0 -100vmax); }
+	.visit-option--4 .visit-option__address,.visit-option--4 .visit-option__phone { display: flex; flex-direction: column; align-items: center; }
+	.visit-option--4 .visit-option__phone { padding: 0 0 0 clamp(2.5rem, 7vw, 6rem); border-top: 0; border-left: 1px solid rgb(242 235 221 / 32%); }
+	.visit-option--4 .visit-option__number { margin-inline: auto; }
+	.visit-option--4 .visit-option__actions { justify-content: center; }
+	.visit-option--4 .visit-option__whatsapp { border-color: var(--color-cream); }
+	.visit-option--4 .visit-option__call { background: var(--color-orange); color: var(--color-ink); }
+	.visit-option--4 .visit-option__call:hover,.visit-option--4 .visit-option__whatsapp:hover { background: var(--color-cream); color: var(--color-ink); }
+
+	/* 5 · Noche de encuentro: portada oscura y banda de mapa/contacto. */
+	.visit-option--5 { grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr); align-items: stretch; background: #171717; }
+	.visit-option--5 .visit-option__photo { grid-column: 1; grid-row: 1; min-height: 590px; }
+	.visit-option--5 .visit-option__heading { grid-column: 2; align-self: center; padding: 2rem clamp(1rem, 3vw, 3rem); }
+	.visit-option--5 .visit-option__map { grid-column: 1; min-height: 420px; }
+	.visit-option--5 .visit-option__contact { grid-column: 2; grid-row: 2; }
+
+	@media (max-width: 760px) {
+		.visit-option { display: flex; flex-direction: column; gap: 1rem; padding: 1.125rem; }
+		.visit-option__photo { order: 0; min-height: 0; aspect-ratio: 1.12; }
+		.visit-option__photo img { min-height: 0; }
+		.visit-option__heading { order: 1; padding: 1.5rem 0 .5rem !important; }
+		.visit-option__heading h2 { font-size: clamp(3.4rem, 15vw, 5rem) !important; }
+		.visit-option__intro { margin-top: 1rem; }
+		.visit-option__map { order: 2; min-height: 66svh !important; max-height: 500px; }
+		.visit-option__contact { order: 3; display: flex !important; gap: 1.5rem; margin: 0 !important; padding: 1.35rem !important; }
+		.visit-option__phone { padding: 1rem 0 0 !important; border: 0 !important; border-top: 1px solid rgb(37 37 37 / 32%) !important; }
+		.visit-option--4 .visit-option__contact { background: var(--color-ink); color: var(--color-cream); }
+		.visit-option--4 .visit-option__whatsapp { border-color: var(--color-cream); }
+		.visit-option--4 .visit-option__call { background: var(--color-orange); color: var(--color-ink); }
+		.visit-option--4 .visit-option__phone { border-top-color: rgb(242 235 221 / 32%) !important; width: 100%; }
+		.visit-option--4 { align-items: stretch; padding-bottom: 0; }
+		.visit-option--4 .visit-option__heading { order: 0; }
+		.visit-option--4 .visit-option__photo { order: 1; align-self: flex-end; width: 68%; aspect-ratio: 4 / 3; margin: .5rem .5rem .75rem 0; }
+		.visit-option--4 .visit-option__map { min-height: 60svh !important; }
+		.visit-option--4 .visit-option__contact { flex-direction: column !important; align-items: center; margin-top: 1rem !important; padding: 2rem 0 !important; }
+		.visit-option--3 .visit-option__contact { display: flex !important; }
+		.visit-option__number { font-size: clamp(1.9rem, 8vw, 2.5rem); }
+		.visit-option__actions { display: grid; grid-template-columns: 1fr 1fr; }
+		.visit-option__call,.visit-option__whatsapp { padding-inline: .75rem; }
+		.visit-option--1 .visit-option__photo { height: auto; aspect-ratio: 1.12; }
+		.visit-option--2 .visit-option__photo,.visit-option--4 .visit-option__photo,.visit-option--5 .visit-option__photo { min-height: 0; }
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: view()) {
+			.visit-option__heading,.visit-option__contact { animation: visit-option-rise 600ms var(--ease-standard) both; animation-timeline: view(); animation-range: entry 0% entry 45%; }
+		}
+	}
+	@keyframes visit-option-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+</style>

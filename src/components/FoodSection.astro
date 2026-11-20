@@ -12,6 +12,8 @@ const index = [
 	{ id: 'hamburguesas', label: 'Hamburguesas' },
 	{ id: 'napolitanas', label: 'Napolitanas' },
 ];
+// Prototipo: 5 pizzas en fila dominó (la primera adelante y más grande)
+const pizzaRow = [{ rotate: -8 }, { rotate: 14 }, { rotate: -20 }, { rotate: 26 }, { rotate: -32 }];
 const formats = ['avif'] as const;
 const fallbackFormat = 'webp';
 ---
@@ -43,17 +45,21 @@ const fallbackFormat = 'webp';
 	<article class="dish dish--pizza" id="pizzas" aria-labelledby="dish-pizzas">
 		<div class="dish__inner page-container">
 			<p class="dish__word" aria-hidden="true">Pizzas</p>
-			<div class="dish__media">
-				<Picture
-					src={pizza}
-					formats={formats}
-					fallbackFormat={fallbackFormat}
-					widths={[520, 800, 1024]}
-					sizes="(max-width: 760px) 118vw, 64vw"
-					alt="Pizza de mozzarella con hierbas y albahaca, cortada en porciones"
-					loading="lazy"
-					decoding="async"
-				/>
+			<div class="dish__media pizza-domino">
+				{pizzaRow.map((item, i) => (
+					<figure class="pizza-domino__item" style={`--i: ${i}; --r: ${item.rotate}deg;`} aria-hidden={i === 0 ? undefined : 'true'}>
+						<Picture
+							src={pizza}
+							formats={formats}
+							fallbackFormat={fallbackFormat}
+							widths={[360, 520, 800]}
+							sizes="(max-width: 760px) 46vw, 30vw"
+							alt={i === 0 ? 'Pizza de mozzarella con hierbas y albahaca, cortada en porciones' : ''}
+							loading="lazy"
+							decoding="async"
+						/>
+					</figure>
+				))}
 			</div>
 			<div class="dish__copy">
 				<h3 id="dish-pizzas">Pizzas</h3>
@@ -314,18 +320,63 @@ const fallbackFormat = 'webp';
 		color: rgb(37 37 37 / 11%);
 	}
 
+	/* Fila dominó: la primera pizza adelante a la derecha, las demás detrás, cada vez más chicas hacia la izquierda */
 	.dish--pizza .dish__media {
-		grid-column: 1 / 8;
-		margin-left: calc(var(--page-gutter) * -1 - 7vw);
+		grid-column: 1 / 9;
 	}
 
-	.dish--pizza .dish__media :global(img) {
-		width: min(118%, 980px);
-		rotate: -9deg;
+	.pizza-domino {
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: center;
+		justify-content: flex-start;
+		padding-right: 2%;
+	}
+
+	.pizza-domino__item {
+		--scale: calc(1 - var(--i) * 0.17);
+		position: relative;
+		z-index: calc(10 - var(--i));
+		flex: none;
+		width: calc(40% * var(--scale));
+		margin: 0;
+		margin-right: calc(-40% * var(--scale) * 0.4);
+		translate: 0 calc(var(--i) * -4%);
+	}
+
+	.pizza-domino__item:first-child {
+		margin-right: 0;
+	}
+
+	.dish--pizza .pizza-domino__item :global(img) {
+		rotate: var(--r);
+		filter: drop-shadow(0 calc(26px - var(--i) * 4px) calc(26px - var(--i) * 4px) rgb(37 37 37 / 24%)) brightness(calc(1 - var(--i) * 0.035));
+	}
+
+	@media (hover: hover) {
+		.dish--pizza:hover .pizza-domino__item :global(img) {
+			transform: translateY(calc(-6px - var(--i) * 2px)) rotate(-2deg);
+			transition-delay: calc(var(--i) * 45ms);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		@supports (animation-timeline: view()) {
+			.pizza-domino__item {
+				animation: domino-in linear both;
+				animation-timeline: view();
+				animation-range: entry calc(var(--i) * 6%) cover 40%;
+			}
+		}
+	}
+
+	@keyframes domino-in {
+		from { opacity: 0; transform: translateX(-18%) rotate(-14deg); }
+		to { opacity: 1; transform: none; }
 	}
 
 	.dish--pizza .dish__copy {
-		grid-column: 8 / 13;
+		grid-column: 9 / 13;
 		padding-bottom: clamp(3rem, 7vw, 7rem);
 	}
 
@@ -506,10 +557,13 @@ const fallbackFormat = 'webp';
 	/* ------------------------------------------------------------ tablet */
 	@media (max-width: 1080px) {
 		.dish--pizza .dish__media {
-			grid-column: 1 / 8;
+			grid-column: 1 / 9;
 		}
 
-		.dish--pizza .dish__copy,
+		.dish--pizza .dish__copy {
+			grid-column: 9 / 13;
+		}
+
 		.dish--burger .dish__copy {
 			grid-column: 8 / 13;
 		}
@@ -573,11 +627,7 @@ const fallbackFormat = 'webp';
 		}
 
 		.dish--pizza .dish__media {
-			margin-left: calc(var(--page-gutter) * -1 - 16vw);
-		}
-
-		.dish--pizza .dish__media :global(img) {
-			width: 112%;
+			margin-top: 3rem;
 		}
 
 		.dish--pizza .dish__copy {

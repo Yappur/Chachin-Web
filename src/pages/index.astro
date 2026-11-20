@@ -2,8 +2,8 @@
 import FoodSection from '../components/FoodSection.astro';
 import Hero from '../components/Hero.astro';
 import IdentityBand from '../components/IdentityBand.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import StorySection from '../components/StorySection.astro';
 import VisitSection from '../components/VisitSection.astro';
 import Layout from '../layouts/Layout.astro';
 ---
@@ -12,11 +12,11 @@ import Layout from '../layouts/Layout.astro';
 	title="Chachín | Comida rica y buenos momentos en Concepción"
 	description="Chachín, bar-restaurante en Concepción, Tucumán. Una casa nueva para compartir comida rica y buenos momentos."
 >
+	<SiteHeader />
 	<main>
 		<Hero />
 		<IdentityBand />
 		<FoodSection />
-		<StorySection />
 		<VisitSection />
 	</main>
 	<SiteFooter />
